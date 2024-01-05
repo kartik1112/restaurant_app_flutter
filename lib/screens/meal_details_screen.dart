@@ -20,30 +20,37 @@ class MealDetailsScreen extends ConsumerWidget {
         title: Text(meals.title),
         actions: [
           IconButton(
-              onPressed: () {
-                final wasAdded = ref
-                    .read(favoriteMealsProvider.notifier)
-                    .toggleMealFavoriteStatus(meals);
+            onPressed: () {
+              final wasAdded = ref
+                  .read(favoriteMealsProvider.notifier)
+                  .toggleMealFavoriteStatus(meals);
 
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(wasAdded
-                        ? 'Meal added as favorite'
-                        : 'Meal removed as Favorite'),
-                  ),
-                );
-                // toggleMealFavoriteStatus(meals);
-              },
-              icon: isFavourite
-                  ? const Icon(Icons.star)
-                  : const Icon(Icons.star_border))
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(wasAdded
+                      ? 'Meal added as favorite'
+                      : 'Meal removed as Favorite'),
+                ),
+              );
+              // toggleMealFavoriteStatus(meals);
+            },
+            icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  return RotationTransition(turns: Tween(begin: 0.1,end: 1.0,).animate(animation), child: child);
+                },
+                child: Icon(isFavourite ? Icons.star : Icons.star_border, key: ValueKey(isFavourite),)),
+          )
         ],
       ),
       body: ListView(children: [
-        FadeInImage(
-            placeholder: MemoryImage(kTransparentImage),
-            image: Image.network(meals.imageUrl).image),
+        Hero(
+          tag: meals.id,
+          child: FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: Image.network(meals.imageUrl).image),
+        ),
         const SizedBox(
           height: 12,
         ),

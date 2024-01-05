@@ -62,14 +62,12 @@ class MealsScreen extends StatelessWidget {
 
     if (title == null) {
       return content;
-    }else{
+    } else {
       return Scaffold(
-        appBar: AppBar(
-          title: Text(title!),
-        ),
-        body: content);
+          appBar: AppBar(
+            title: Text(title!),
+          ),
+          body: content);
     }
-
-    
   }
 }
